@@ -13,7 +13,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN playwright install chromium --with-deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    fonts-unifont fonts-ubuntu \
+    && rm -rf /var/lib/apt/lists/* \
+    && playwright install --with-deps chromium
 
 COPY . .
 
