@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: carsensor-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRE_MINUTES
+        value: "1440"
+      - key: SCRAPE_INTERVAL_MINUTES
+        value: "60"
+      - key: SCRAPE_MAX_PAGES_PER_MAKER
+        value: "3"

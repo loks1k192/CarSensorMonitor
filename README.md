@@ -124,7 +124,7 @@ docker-compose up --build
 - Скелетоны при загрузке данных
 - Клиентская авторизация через localStorage + автоматический redirect
 - Zustand для управления состоянием фильтров
-- API-запросы через проксирование Next.js rewrites
+- Прямые API-запросы из браузера к бэкенду
 
 ## Структура проекта
 
@@ -171,3 +171,36 @@ fullstack/
 | `SCRAPE_INTERVAL_MINUTES` | Интервал скрапинга | 60 |
 | `SCRAPE_MAX_PAGES_PER_MAKER` | Макс. страниц на марку | 3 |
 | `NEXT_PUBLIC_API_URL` | URL бэкенда для фронта | http://localhost:8000 |
+
+## Деплой (бесплатно)
+
+### 1. База данных — Neon.tech
+
+1. Зарегистрироваться на [neon.tech](https://neon.tech)
+2. Создать проект → скопировать `DATABASE_URL` (формат `postgresql://user:pass@host/db?sslmode=require`)
+
+### 2. Backend — Render.com
+
+1. Зарегистрироваться на [render.com](https://render.com)
+2. New → Web Service → подключить GitHub-репозиторий
+3. Настройки:
+   - **Root Directory**: `backend`
+   - **Runtime**: Docker
+   - **Plan**: Free
+4. Environment Variables:
+   - `DATABASE_URL` = строка из Neon
+   - `SECRET_KEY` = сгенерировать длинный ключ
+   - `JWT_ALGORITHM` = `HS256`
+   - `JWT_EXPIRE_MINUTES` = `1440`
+   - `SCRAPE_INTERVAL_MINUTES` = `60`
+   - `SCRAPE_MAX_PAGES_PER_MAKER` = `3`
+
+### 3. Frontend — Vercel
+
+1. Зарегистрироваться на [vercel.com](https://vercel.com)
+2. Import Project → подключить GitHub-репозиторий
+3. Настройки:
+   - **Root Directory**: `frontend`
+   - **Framework**: Next.js
+4. Environment Variables:
+   - `NEXT_PUBLIC_API_URL` = URL бэкенда с Render (например `https://carsensor-backend.onrender.com`)
