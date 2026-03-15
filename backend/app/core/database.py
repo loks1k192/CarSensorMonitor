@@ -13,6 +13,7 @@ def get_async_url(url: str) -> str:
     elif url.startswith("postgres://"):
         url = url.replace("postgres://", "postgresql+asyncpg://", 1)
     url = re.sub(r"[&?]channel_binding=[^&]*", "", url)
+    url = re.sub(r"[&?]sslmode=[^&]*", "", url)
     return url
 
 
